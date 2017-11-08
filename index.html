@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <title>Promodoro-App</title>
+</head>
+
+<body>
+
+  <div id="promodoro-app">
+    <h1 class="title">Promodoro Timer</h1>
+    <h3 v-cloack="">{{ mode }}</h3>
+    <div class="clock" :class="{rest: round}">
+      <time class="time" v-cloack="">{{ time | getTime }}</time>
+      <div class="inner-controls" @click="play">
+        <i class="material-icons" v-cloack="">{{ icon }}</i>
+      </div>
+    </div>
+    <div class="outer-controls-container">
+      <div class="session-control">
+        <h2>Session Time</h2>
+        <button @click="removeTime('session')">
+          <i class="material-icons">navigate_before</i>
+        </button>
+        <span class="value" v-cloack="">{{ session }}</span>
+        <button @click="addTime('session')">
+          <i class="material-icons">navigate_next</i>
+        </button>
+      </div>
+      <div class="separator"></div>
+      <div class="rest-control">
+        <h2>Rest Time</h2>
+        <button @click="removeTime('rest')">
+          <i class="material-icons">navigate_before</i>
+        </button>
+        <span class="value" v-cloack="">{{ rest }}</span>
+        <button @click="addTime('rest')">
+          <i class="material-icons">navigate_next</i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.min.js"></script>
+  <script src="index.js"></script>
+</body>
+
+</html>
