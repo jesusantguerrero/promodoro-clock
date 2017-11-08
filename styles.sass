@@ -1,0 +1,74 @@
+$contrast-color: #0277BD
+$primary-color: #4DB6AC
+
+=makeFlex($direction, $h-align, $v-align)
+  display: flex
+  flex-direction: $direction
+  justify-content: $h-align
+  align-items: $v-align
+html
+  +makeFlex(row, center, center)
+  background: $primary-color
+*
+  transition: all ease .3s
+  color: white
+  font-family: sans-serif
+[v-cloack]
+  display: none
+#promodoro-app
+  +makeFlex(column, center, center)
+  width: 100%
+  height: 100%
+  text-align: center
+.clock
+  background: transparentize($contrast-color,.7)
+  height: 300px
+  width: 300px
+  border-radius: 50%
+  color: #fff
+  border: 2px solid #ddd
+  +makeFlex(column, center, center)
+  box-shadow: 2px 3px 4px rgba(0,0,0,.4) 
+  cursor: pointer
+  position: relative
+  &:hover
+    box-shadow: 3px 4px 5px rgba(0,0,0,.2)
+    .inner-controls
+      opacity: 7
+  &.rest
+    background: #0091EA
+.title
+  margin: 0
+.time 
+  font-size: 90px
+.inner-controls
+  position: absolute
+  width: 100%
+  height: 100%
+  border-radius: 50%
+  background: rgba(0,0,0,.5)
+  opacity: 0
+  transition: all ease 1s
+  +makeFlex(row, center, center)
+  .material-icons
+    font-size: 90px
+.outer-controls-container
+  +makeFlex(row, space-around, center)
+  [class*="-control"]
+    margin: 5px
+button
+  border: 0
+  height: 38px
+  color: $primary-color
+  padding: 5px
+  background: $contrast-color
+  cursor: pointer
+.value
+  margin: 0 10px
+  display: inline-block
+  height: 38px
+  vertical-align: middle
+.separator
+  height: 100%
+  width: 2px
+  background: white
