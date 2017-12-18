@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="X-UA-Compatible", content="ie=edge")
+    link(href="https://fonts.googleapis.com/icon?family=Material+Icons", rel="stylesheet")
+    link(rel="stylesheet" href="./assets/styles.css")
+    title IC-Promodoro
+  body
+    #promodoro-app
+      h1.title Promodoro Timer
+      .clock(:class="{rest: round, ticking: run == 1 }")
+        time.time(v-cloack="") {{ time | getTime }}
+        span.note click here to {{ message }}
+        span(v-cloack="") {{ mode }}
+        .inner-controls(@click="play")
+          i.material-icons(v-cloack="") {{ icon }}
+      .outer-controls-container
+        .session-control
+          h4 Session
+          .cs-row
+            button(@click="removeTime('session')"): i.material-icons navigate_before
+            span.value(v-cloack="") {{ session }}
+            button(@click="addTime('session')"): i.material-icons navigate_next
+        .separator
+          h4 Reset
+          .cs-row
+            button(@click="reset") Reset
+        .rest-control
+          h4 Rest 
+          .cs-row
+            button(@click="removeTime('rest')"): i.material-icons navigate_before
+            span.value(v-cloack="") {{ rest }}
+            button(@click="addTime('rest')"): i.material-icons navigate_next
+      audio#audio(src="./assets/muerte_en_hawaii.mp3")
+
+    script(src="./assets/vue.min.js")
+    script(src="./index.js")

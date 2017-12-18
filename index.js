@@ -8,7 +8,12 @@ const promodoroApp = new Vue({
     icon: 'play_arrow',
     run: 0,
     timer: '',
-    round: 0
+    round: 0,
+    audio: '',
+    mode: 'session'
+  },
+  mounted(){
+    this.audio = document.querySelector('#audio')
   },
   
   filters:{
@@ -23,24 +28,32 @@ const promodoroApp = new Vue({
   computed: {
     mode() {
       return (this.round == 0) ? 'Session' : 'Rest'
+    },
+    
+    message() {
+      switch(this.run){
+        case 0:
+          return 'start'
+        case 1:
+          return 'pause'
+        case 2:
+          return 'resume'
+      }
     }
   },
     
   methods: {
     play(){
+      this.stopSound()
       switch (this.run) {
         case 0:
-          this.initTimer('session');
-          this.run = 1
-          this.icon = 'pause'
+          this.initTimer();
           break
         case 1:
           this.stop()
           break
         case 2:
           this.initTimer()
-          this.icon = 'pause'
-          this.run = 1
           break
       }
     },
@@ -54,23 +67,29 @@ const promodoroApp = new Vue({
     reset() {
       this.stop()
       this.run = 0
-      this.updateTime(time.minutes, time.seconds)
+      this.round = 0
+      this.time = {minutes: 25, seconds: 0}
+      this.session = 25
+      this.rest = 5
+      this.mode = 'session'
     },
     
     clear(){
       this.stop()
-      if (this.round == 0){
-       this.initTimer('rest')
-       this.round = 1
+      if (this.round == 0) {
+        this.setRestMode()
+        this.round = 1
       } else {
         this.round = 0
         this.run = 0
       }
     },
     
-    initTimer(mode = 'resume') {
+    initTimer() {
+      this.run = 1
+      this.icon = 'pause'
       const self = this
-      switch(mode){
+      switch(this.mode){
         case 'session':
           this.time.minutes = this.session
           break
@@ -87,11 +106,12 @@ const promodoroApp = new Vue({
     countDown() {
       if (this.time.seconds == 0) {
          this.time.minutes--
-       if (this.time.minutes >= 0) {
-         this.time.seconds = 59  
-       } else {
-         this.clear()
-       }      
+         if (this.time.minutes >= 0) {
+            this.time.seconds = 59  
+          } else {
+            this.clear()
+            this.playSound()
+          }      
       } else {
         this.time.seconds--
       }
@@ -100,24 +120,52 @@ const promodoroApp = new Vue({
     addTime(property){
       const self = this
       this[property]++
-      if (property == 'session') {
+      
+      if (property == 'session' && this.round == 0) {
+        self.updateTime(this[property])
+      } else if (property == 'rest' && this.round == 1) {
         self.updateTime(this[property])
       }
+      
       this.stop()
     },
     
     removeTime(property){
       const self = this
-      this[property]--
-      if (property == 'session') {
+      if (this[property] > 0) {
+        this[property]-- 
+      }
+      
+      if (property == 'session' && this.round == 0) {
+        self.updateTime(this[property])
+      } else if (property == 'rest' && this.round == 1) {
         self.updateTime(this[property])
       }
+      
       this.stop()
     },
    
     updateTime(mins, secs = 00){
       this.time.minutes = mins;
       this.time.seconds = secs;
+    },
+    
+    playSound(){
+      const self = this
+      this.audio.currentTime = 0
+      this.audio.play()
+      setTimeout(() => {
+        this.audio.pause()
+      }, 10000)
+    },
+
+    stopSound() {
+      this.audio.pause()
+    },
+    
+    setRestMode() {
+      this.mode = 'rest'
+      this.time.minutes = this.rest
     }
   }
 })

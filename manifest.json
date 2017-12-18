@@ -1,0 +1,18 @@
+{
+  "manifest_version": 2,
+
+  "name": "IC-Promodoro",
+  "description": "This is a promodoro clock, my first chrome extension",
+  "version": "1.0",
+
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_popup": "popup.html",
+    "default_title": "click here"
+  },
+
+  "permissions": [
+    "activeTab",
+    "storage"
+  ]
+}
