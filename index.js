@@ -53,7 +53,7 @@ const promodoroApp = new Vue({
           this.stop()
           break
         case 2:
-          this.initTimer()
+          this.initTimer('resume')
           break
       }
     },
@@ -85,17 +85,14 @@ const promodoroApp = new Vue({
       }
     },
     
-    initTimer() {
+    initTimer(selfMode) {
       this.run = 1
       this.icon = 'pause'
       const self = this
-      switch(this.mode){
-        case 'session':
-          this.time.minutes = this.session
-          break
-        case 'rest':
-          this.time.minutes = this.rest
-          break
+      if (this.mode == 'session' && !selfMode) {
+        this.time.minutes = this.session
+      } else if (this.mode == 'rest' && !selfMode) {
+        this.time.minutes = this.rest
       }
       this.timer = setInterval(()=> {
         self.countDown()
