@@ -81,6 +81,7 @@ const promodoroApp = new Vue({
         this.round = 1
       } else {
         this.round = 0
+        this.setSessionMode()
         this.run = 0
       }
     },
@@ -151,18 +152,24 @@ const promodoroApp = new Vue({
       const self = this
       this.audio.currentTime = 0
       this.audio.play()
-      setTimeout(() => {
-        this.audio.pause()
-      }, 10000)
+      window.navigator.vibrate([1000, 100, 1000, 100, 1000, 100, 1000])
+      const stop = confirm(`the time of the ${this.mode} has finished`)
+      this.stopSound()
     },
 
     stopSound() {
       this.audio.pause()
+      window.navigator.vibrate(0)
     },
     
     setRestMode() {
       this.mode = 'rest'
       this.time.minutes = this.rest
+    },
+
+    setSessionMode() {
+      this.mode = 'session'
+      this.time.minutes = this.session
     }
   }
 })
